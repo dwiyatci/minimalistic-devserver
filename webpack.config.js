@@ -9,6 +9,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function (env) {
   const prodEnabled = env && env.prod;
+  const cometdJsBaseDir = resolve(__dirname, 'bower_components/cometd-jquery/cometd-javascript');
+  const cometdJsCommonDir = `${cometdJsBaseDir}/common/src/main/js/org/cometd`;
+  const cometdJqueryDir = `${cometdJsBaseDir}/jquery/src/main/webapp/jquery`;
 
   return {
     devtool: prodEnabled ? 'source-map' : 'eval',
@@ -22,7 +25,21 @@ module.exports = function (env) {
     entry: {
       vendor: [
         'lodash',
+        'q',
         'jquery',
+
+        // cometd-cumulocity
+        `${cometdJsCommonDir}/cometd-namespace`,
+        `${cometdJsCommonDir}/cometd-json`,
+        `${cometdJsCommonDir}/Cometd`,
+        `${cometdJsCommonDir}/Utils`,
+        `${cometdJsCommonDir}/TransportRegistry`,
+        `${cometdJsCommonDir}/Transport`,
+        `${cometdJsCommonDir}/RequestTransport`,
+        `${cometdJsCommonDir}/LongPollingTransport`,
+        `${cometdJsCommonDir}/CallbackPollingTransport`,
+        `${cometdJsCommonDir}/WebSocketTransport`,
+        `${cometdJqueryDir}/jquery.cometd`,
       ],
       app: [
         'babel-polyfill',
@@ -49,6 +66,12 @@ module.exports = function (env) {
       }),
 
       //new ExtractTextPlugin('[name].css'),
+
+      //new webpack.ProvidePlugin({
+      //  $: 'jquery',
+      //  jQuery: 'jquery',
+      //  'window.jQuery': 'jquery'
+      //})
     ],
     module: {
       loaders: [
@@ -66,6 +89,14 @@ module.exports = function (env) {
             presets: ['es2015', 'stage-2'],
             plugins: ['transform-runtime'],
           },
+        },
+        {
+          test: /org\/cometd/,
+          loader: 'imports?this=>window',
+        },
+        {
+          test: /jquery\.cometd\.js$/,
+          loader: 'imports?this=>window,define=>false,jQuery=jquery',
         },
         //{
         //  test: /\.css$/,
@@ -107,6 +138,11 @@ module.exports = function (env) {
       contentBase: 'dist/',
       noInfo: true,
       historyApiFallback: true,
+      proxy: {
+        '/cep/realtime/*': {
+          target: 'http://glenn.cumulocity.com',
+        },
+      },
     },
   };
 };

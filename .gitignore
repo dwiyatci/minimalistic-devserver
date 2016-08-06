@@ -3,4 +3,5 @@
 .idea
 .eslintcache
 node_modules
+bower_components
 dist

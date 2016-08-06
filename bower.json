@@ -1,0 +1,20 @@
+{
+  "name": "minimalistic-devserver",
+  "description": "minimalistic devserver using webpack-dev-server v2.x",
+  "main": "",
+  "authors": [
+    "Glenn Dwiyatcita <dwiyatci@mail.com> (https://tiny.cc/dwiyatci)"
+  ],
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "homepage": "https://github.com/dwiyatci/minimalistic-devserver",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "cometd-jquery": "2.7.0"
+  }
+}

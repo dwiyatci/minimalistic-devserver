@@ -2,8 +2,7 @@
  * Created by glenn on 8/5/16.
  */
 
-const $ = require('jquery');
+var _ = require('lodash');
+var $ = require('jquery');
 
-$(() => {
-  $('#app').text('hello, glenn');
-});
+console.assert(!_.isUndefined($.Cometd));
