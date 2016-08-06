@@ -13,7 +13,10 @@ module.exports = function (env) {
   return {
     devtool: prodEnabled ? 'source-map' : 'eval',
     resolve: {
-      modules: [resolve(__dirname, 'src'), 'node_modules'],
+      modules: [
+        'node_modules',
+        resolve(__dirname, 'src'),
+      ],
       extensions: ['', '.js', '.css', '.html', '.json'],
     },
     entry: {
@@ -106,4 +109,4 @@ module.exports = function (env) {
       historyApiFallback: true,
     },
   };
-}
+};
