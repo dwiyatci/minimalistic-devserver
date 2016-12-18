@@ -2,8 +2,10 @@
  * Created by glenn on 8/5/16.
  */
 
-const $ = require('jquery');
+import _ from 'lodash';
+import $ from 'jquery';
+import './app.css';
 
 $(() => {
-  $('#app').text('hello, glenn');
+  $('#app').text(_.identity('sveiki, ieva'));
 });
