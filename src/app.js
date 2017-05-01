@@ -2,10 +2,11 @@
  * Created by glenn on 8/5/16.
  */
 
-import _ from 'lodash';
+import 'babel-polyfill';
+import { identity } from 'lodash';
 import $ from 'jquery';
 import './app.css';
 
 $(() => {
-  $('#app').text(_.identity('sveiki, ieva'));
+  $('#app').text(identity('paldies, ieva'));
 });
