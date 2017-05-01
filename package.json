@@ -16,7 +16,7 @@
     "url": "https://github.com/dwiyatci/minimalistic-devserver.git"
   },
   "scripts": {
-    "install:clean": "yarn upgrade",
+    "install:clean": "yarn upgrade || yarn install",
     "update": "yarn upgrade-interactive",
     "start": "webpack-dev-server",
     "webpack": "npm run clean && webpack",
