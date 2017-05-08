@@ -25,6 +25,11 @@ const config = {
     publicPath: '/',
   },
   module: {
+    /**
+     * You can only use noParse for files that do not have calls to
+     * import, require, define or any other importing mechanism.
+     * (hint: look at jQuery 1.9.1 vs jQuery 2.1.0).
+     */
     noParse: /jquery/,
     rules: [
       {
