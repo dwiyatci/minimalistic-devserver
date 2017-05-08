@@ -82,8 +82,8 @@ const config = {
     }),
 
     // Building for Production
-    prodEnabled ? new webpack.LoaderOptionsPlugin({ minimize: true }) : undefined,
-    prodEnabled ? new webpack.optimize.UglifyJsPlugin({ sourceMap: true }) : undefined,
+    prodEnabled && new webpack.LoaderOptionsPlugin({ minimize: true }),
+    prodEnabled && new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
 
     // Caching
     new HtmlWebpackPlugin({
@@ -95,7 +95,7 @@ const config = {
     }),
 
     // HMR
-    !prodEnabled ? new webpack.HotModuleReplacementPlugin() : undefined,
+    !prodEnabled && new webpack.HotModuleReplacementPlugin(),
   ]),
   devtool: prodEnabled ? 'source-map' : 'cheap-eval-source-map',
   resolve: {
