@@ -6,20 +6,17 @@ const { compact } = require('lodash');
 const { resolve } = require('path');
 
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 
 const prodEnabled = process.env.NODE_ENV === 'production';
 const config = {
   entry: {
-    app: './src/app.js',
+    a: './src/a.js',
+    b: './src/b.js',
     vendor: [
-      'lodash',
-      'jquery',
-    ],
-    polyfills: [
-      'babel-polyfill',
+      //'jquery',
+      //'jquery/dist/jquery.min',
+      'jquery/jquery.js',
     ],
   },
   output: {
@@ -28,71 +25,34 @@ const config = {
     publicPath: '/',
   },
   module: {
+    noParse: /jquery/,
     rules: [
       {
-        test: /\.js$/,
-        include: [
-          resolve(__dirname, 'src'),
-        ],
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [['env', { modules: false }]],
-            plugins: ['transform-runtime'],
-          },
-        },
+        test: /(a|b)\.js$/,
+        //use: 'imports-loader?$=jquery',
+        use: 'imports-loader?$=>window.jQuery',
       },
-      {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: 'css-loader',
-        }),
-      },
-      {
-        test: /\.json$/,
-        use: 'json-loader',
-      },
-      {
-        test: /\.html$/,
-        use: 'html-loader',
-      },
-      {
-        test: /\.(png|jpg|gif)$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 8192,
-          },
-        },
-      },
+      //{
+      //  test: /jquery/,
+      //  use: 'script-loader',
+      //},
     ],
   },
   plugins: compact([
-    // Code Splitting - CSS
-    new ExtractTextPlugin(prodEnabled ? '[name].[chunkhash].css' : '[name].css'),
+    //new webpack.ProvidePlugin({
+    //  $: 'jquery'
+    //}),
 
     // Code Splitting - Libraries
     new webpack.optimize.CommonsChunkPlugin({
       names: [
-        'polyfills',
         'vendor',
-        'manifest',
       ],
       minChunks: Infinity,
     }),
 
-    // Building for Production
-    prodEnabled && new webpack.LoaderOptionsPlugin({ minimize: true }),
-    prodEnabled && new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
-
     // Caching
-    new HtmlWebpackPlugin({
-      template: './src/index.ejs',
-      favicon: './src/favicon.ico',
-    }),
-    new InlineManifestWebpackPlugin({
-      name: 'webpackManifest',
-    }),
+    new HtmlWebpackPlugin({ template: './src/index.ejs' }),
 
     // HMR
     !prodEnabled && new webpack.HotModuleReplacementPlugin(),
