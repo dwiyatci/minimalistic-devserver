@@ -5,15 +5,15 @@ env:
   node: true
   es6: true
 extends:
-  - airbnb
+- airbnb
 rules:
   no-use-before-define:
-    - error
-    - functions: false
+  - error
+  - functions: false
   comma-dangle:
-    - error
-    - arrays: always-multiline
-      objects: always-multiline
-      imports: always-multiline
-      exports: always-multiline
-      functions: ignore
+  - error
+  - arrays: always-multiline
+    objects: always-multiline
+    imports: always-multiline
+    exports: always-multiline
+    functions: ignore
