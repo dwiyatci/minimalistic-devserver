@@ -20,7 +20,7 @@
     "update": "yarn upgrade-interactive",
     "start": "webpack-dev-server",
     "webpack": "npm run clean && webpack",
-    "build": "npm run lint && npm run clean && cross-env NODE_ENV=production webpack",
+    "build": "npm run clean && cross-env NODE_ENV=production webpack",
     "lint": "eslint --cache src",
     "clean": "rimraf assets"
   },
