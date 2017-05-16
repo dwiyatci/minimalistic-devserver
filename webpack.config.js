@@ -2,7 +2,6 @@
  * Created by glenn on 30.04.17.
  */
 
-const { compact } = require('lodash');
 const { resolve } = require('path');
 
 const webpack = require('webpack');
@@ -10,7 +9,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
 
-const prodEnabled = process.env.NODE_ENV === 'production';
 const config = {
   entry: {
     app: './src/app.js',
@@ -23,7 +21,7 @@ const config = {
     ],
   },
   output: {
-    filename: prodEnabled ? '[name].[chunkhash].js' : '[name].js',
+    filename: ifProd('[name].[chunkhash].js', '[name].js'),
     path: resolve(__dirname, 'assets'),
     publicPath: '/',
   },
@@ -58,18 +56,13 @@ const config = {
       },
       {
         test: /\.(png|jpg|gif)$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: 8192,
-          },
-        },
+        use: 'url-loader?limit=8192',
       },
     ],
   },
-  plugins: compact([
+  plugins: [
     // Code Splitting - CSS
-    new ExtractTextPlugin(prodEnabled ? '[name].[chunkhash].css' : '[name].css'),
+    new ExtractTextPlugin(ifProd('[name].[chunkhash].css', '[name].css')),
 
     // Code Splitting - Libraries
     new webpack.optimize.CommonsChunkPlugin({
@@ -81,10 +74,6 @@ const config = {
       minChunks: Infinity,
     }),
 
-    // Building for Production
-    prodEnabled && new webpack.LoaderOptionsPlugin({ minimize: true }),
-    prodEnabled && new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
-
     // Caching
     new HtmlWebpackPlugin({
       template: './src/index.ejs',
@@ -94,10 +83,21 @@ const config = {
       name: 'webpackManifest',
     }),
 
-    // HMR
-    !prodEnabled && new webpack.HotModuleReplacementPlugin(),
-  ]),
-  devtool: prodEnabled ? 'source-map' : 'cheap-eval-source-map',
+    ...ifProd(
+      [
+        // Building for Production
+        new webpack.LoaderOptionsPlugin({ minimize: true }),
+        new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
+      ],
+      [
+        new webpack.NoEmitOnErrorsPlugin(),
+
+        // HMR
+        new webpack.HotModuleReplacementPlugin(),
+      ]
+    ),
+  ],
+  devtool: ifProd('source-map', 'eval'),
   resolve: {
     modules: [
       'node_modules',
@@ -113,5 +113,9 @@ const config = {
     https: true,
   },
 };
+
+function ifProd(prodStuff, devStuff) {
+  return (process.env.NODE_ENV === 'production') ? prodStuff : devStuff;
+}
 
 module.exports = config;

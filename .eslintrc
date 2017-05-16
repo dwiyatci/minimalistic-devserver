@@ -1,11 +1,12 @@
-{
-  "parser": "babel-eslint",
-  "env": {
-    "browser": true,
-    "node": true,
-    "es6": true
-  },
-  "extends": [
-    "airbnb"
-  ]
-}
+---
+parser: babel-eslint
+env:
+  browser: true
+  node: true
+  es6: true
+extends:
+  - airbnb
+rules:
+  no-use-before-define:
+    - error
+    - functions: false
