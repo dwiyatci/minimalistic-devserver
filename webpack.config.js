@@ -96,6 +96,9 @@ const config = {
         new webpack.HotModuleReplacementPlugin(),
       ]
     ),
+
+    // Scope hoisting
+    new webpack.optimize.ModuleConcatenationPlugin(),
   ],
   devtool: ifProd('source-map', 'eval'),
   resolve: {
