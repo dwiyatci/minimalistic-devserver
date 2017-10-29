@@ -1,5 +1,6 @@
 /**
  * Created by glenn on 30.04.17.
+ * Last updated on 29.10.17.
  */
 
 const { resolve } = require('path');
@@ -23,7 +24,6 @@ const config = {
   output: {
     filename: ifProd('[name].[chunkhash].js', '[name].js'),
     path: resolve(__dirname, 'assets'),
-    publicPath: '/',
   },
   module: {
     rules: [
@@ -33,18 +33,18 @@ const config = {
           resolve(__dirname, 'src'),
         ],
         use: {
+          // https://webpack.js.org/loaders/babel-loader
           loader: 'babel-loader',
           options: {
-            presets: [['env', { modules: false }]],
-            plugins: ['transform-runtime'],
+            presets: ['env'],
+            plugins: ['transform-runtime', 'babel-plugin-transform-object-rest-spread'],
+            cacheDirectory: true,
           },
         },
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: 'css-loader',
-        }),
+        use: ExtractTextPlugin.extract({ use: 'css-loader' }),
       },
       {
         test: /\.json$/,
@@ -56,7 +56,10 @@ const config = {
       },
       {
         test: /\.(png|jpg|gif)$/,
-        use: 'url-loader?limit=8192',
+        use: {
+          loader: 'url-loader',
+          options: { limit: 8192 },
+        },
       },
     ],
   },
@@ -66,12 +69,12 @@ const config = {
 
     // Code Splitting - Libraries
     new webpack.optimize.CommonsChunkPlugin({
+      // https://stackoverflow.com/q/39548175/2013891
       names: [
         'polyfills',
         'vendor',
         'manifest',
       ],
-      minChunks: Infinity,
     }),
 
     // Caching
@@ -79,14 +82,12 @@ const config = {
       template: './src/index.ejs',
       favicon: './src/favicon.ico',
     }),
-    new InlineManifestWebpackPlugin({
-      name: 'webpackManifest',
-    }),
+    new InlineManifestWebpackPlugin(),
 
     ...ifProd(
       [
         // Building for Production
-        new webpack.LoaderOptionsPlugin({ minimize: true }),
+        // new webpack.LoaderOptionsPlugin({ minimize: true }), - not needed anymore?
         new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
       ],
       [
