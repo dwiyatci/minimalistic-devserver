@@ -21,8 +21,8 @@
     "start": "webpack-dev-server",
     "webpack": "yarn clean && webpack",
     "build": "yarn clean && cross-env NODE_ENV=production webpack",
-    "lint": "eslint --cache src",
-    "clean": "rimraf assets"
+    "clean": "rimraf assets",
+    "lint": "eslint --cache src"
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",

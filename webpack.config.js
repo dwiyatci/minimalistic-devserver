@@ -1,6 +1,6 @@
 /**
  * Created by glenn on 30.04.17.
- * Last updated on 29.10.17.
+ * Last updated on 31.10.17.
  */
 
 const { resolve } = require('path');
@@ -56,10 +56,7 @@ const config = {
       },
       {
         test: /\.(png|jpg|gif)$/,
-        use: {
-          loader: 'url-loader',
-          options: { limit: 8192 },
-        },
+        use: 'url-loader?limit=8192',
       },
     ],
   },
@@ -70,6 +67,7 @@ const config = {
     // Code Splitting - Libraries
     new webpack.optimize.CommonsChunkPlugin({
       // https://stackoverflow.com/q/39548175/2013891
+      // The order of this array matters.
       names: [
         'polyfills',
         'vendor',
