@@ -1,6 +1,6 @@
 /**
  * Created by glenn on 30.04.17.
- * Last updated on 31.10.17.
+ * Last updated on 30.12.17.
  */
 
 const { resolve } = require('path');
@@ -36,8 +36,6 @@ const config = {
           // https://webpack.js.org/loaders/babel-loader
           loader: 'babel-loader',
           options: {
-            presets: ['env'],
-            plugins: ['transform-runtime', 'babel-plugin-transform-object-rest-spread'],
             cacheDirectory: true,
           },
         },
@@ -47,16 +45,16 @@ const config = {
         use: ExtractTextPlugin.extract({ use: 'css-loader' }),
       },
       {
-        test: /\.json$/,
-        use: 'json-loader',
-      },
-      {
         test: /\.html$/,
         use: 'html-loader',
       },
       {
         test: /\.(png|jpg|gif)$/,
         use: 'url-loader?limit=8192',
+      },
+      {
+        test: /\.json$/,
+        use: 'json-loader',
       },
     ],
   },
