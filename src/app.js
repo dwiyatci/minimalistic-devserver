@@ -1,5 +1,5 @@
 /**
- * Created by glenn on 8/5/16.
+ * Created by glenn on 05.08.16.
  */
 
 import 'babel-polyfill';
@@ -8,5 +8,5 @@ import $ from 'jquery';
 import './app.css';
 
 $(() => {
-  $('#app').text(identity('dobrý deň, natália! :)'));
+  $('#app').text(identity('divirta-se, ana! :)'));
 });
