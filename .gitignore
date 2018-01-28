@@ -3,4 +3,4 @@
 \.idea
 \.eslintcache
 node_modules
-assets
+dist
