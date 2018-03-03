@@ -8,5 +8,5 @@ import $ from 'jquery';
 import './app.css';
 
 $(() => {
-  $('#app').text(identity('divirta-se, ana! :)'));
+  $('#app').text(identity('Sveikas, Eliza! ;)'));
 });
