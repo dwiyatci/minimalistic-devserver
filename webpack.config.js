@@ -1,19 +1,18 @@
 /**
  * Created by glenn on 05.08.16.
- * Last updated on 29.01.18.
+ * Last updated on 03.03.18.
  */
 
 const { resolve } = require('path');
-// const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = (env) => {
   const config = {
-    mode: eitherProdOrDev('production', 'development'),
-    // output: {
-    //   filename: eitherProdOrDev('[name].[chunkhash].js', '[name].js'),
-    // },
+    mode: eitherDevOrProd('development', 'production'),
+    output: {
+      filename: eitherDevOrProd('[name].js', '[chunkhash].js'),
+    },
     module: {
       rules: [
         {
@@ -31,37 +30,41 @@ module.exports = (env) => {
         },
         {
           test: /\.css$/,
-          // use: ExtractTextPlugin.extract({ use: 'css-loader' }),
-          use: 'css-loader',
+          use: ExtractTextPlugin.extract({
+            use: 'css-loader',
+            fallback: 'style-loader',
+          }),
+          // use: ['style-loader', 'css-loader'],
         },
         {
           test: /\.html$/,
           use: 'html-loader',
         },
         {
-          test: /\.(png|jpg|gif)$/,
-          use: 'url-loader?limit=8192',
-        },
-        {
           test: /\.json$/,
           type: 'json',
+        },
+        {
+          test: /\.(png|jpg|gif)$/,
+          use: 'url-loader?limit=8192',
         },
       ],
     },
     plugins: [
       // Code Splitting - CSS
-      // new ExtractTextPlugin(eitherProdOrDev('[name].[chunkhash].css', '[name].css')),
+      new ExtractTextPlugin(eitherDevOrProd('[name].css', '[name].[chunkhash].css')),
 
       // Caching
-      // new HtmlWebpackPlugin({
-      //   template: './src/index.ejs',
-      //   favicon: './src/favicon.ico',
-      // }),
-      // new InlineManifestWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        template: './src/index.ejs',
+        favicon: './src/favicon.ico',
+      }),
     ],
     optimization: {
+      // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
       splitChunks: {
         chunks: 'all',
+        // name: false,
       },
       runtimeChunk: true,
     },
@@ -70,14 +73,13 @@ module.exports = (env) => {
       compress: true,
       noInfo: true,
       historyApiFallback: true,
-      hot: true,
       https: true,
     },
   };
 
   return config;
 
-  function eitherProdOrDev(prodStuff, devStuff) {
+  function eitherDevOrProd(devStuff, prodStuff) {
     return (env && env.production) ? prodStuff : devStuff;
   }
 };
