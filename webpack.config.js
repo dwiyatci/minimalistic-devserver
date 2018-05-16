@@ -1,17 +1,17 @@
 /**
  * Created by glenn on 05.08.16.
- * Last updated on 03.03.18.
+ * Last updated on 16.05.18.
  */
 
 const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env) => {
   const config = {
     mode: eitherDevOrProd('development', 'production'),
     output: {
-      filename: eitherDevOrProd('[name].js', '[chunkhash].js'),
+      filename: eitherDevOrProd('[name].js', '[name].[chunkhash].js'),
     },
     module: {
       rules: [
@@ -30,11 +30,15 @@ module.exports = (env) => {
         },
         {
           test: /\.css$/,
-          use: ExtractTextPlugin.extract({
-            use: 'css-loader',
-            fallback: 'style-loader',
-          }),
           // use: ['style-loader', 'css-loader'],
+          // use: ExtractTextPlugin.extract({
+          //   use: 'css-loader',
+          //   fallback: 'style-loader',
+          // }),
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+          ],
         },
         {
           test: /\.html$/,
@@ -52,7 +56,10 @@ module.exports = (env) => {
     },
     plugins: [
       // Code Splitting - CSS
-      new ExtractTextPlugin(eitherDevOrProd('[name].css', '[name].[chunkhash].css')),
+      // new ExtractTextPlugin(eitherDevOrProd('[name].css', '[name].[chunkhash].css')),
+      new MiniCssExtractPlugin({
+        filename: eitherDevOrProd('[name].css', '[name].[chunkhash].css'),
+      }),
 
       // Caching
       new HtmlWebpackPlugin({
@@ -71,7 +78,7 @@ module.exports = (env) => {
     devServer: {
       contentBase: resolve(__dirname, 'dist'),
       compress: true,
-      noInfo: true,
+      noInfo: false,
       historyApiFallback: true,
       https: true,
     },
