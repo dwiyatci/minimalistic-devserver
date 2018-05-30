@@ -71,7 +71,7 @@ module.exports = (env) => {
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
       splitChunks: {
         chunks: 'all',
-        // name: false,
+        name: false,
       },
       runtimeChunk: true,
     },
