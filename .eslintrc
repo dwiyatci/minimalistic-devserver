@@ -3,15 +3,12 @@ env:
   browser: true
   node: true
   es6: true
-extends: airbnb-base
+extends:
+  - airbnb-base
+  - prettier
 rules:
+  semi:
+  - error
   no-use-before-define:
   - error
   - functions: false
-  comma-dangle:
-  - error
-  - arrays: always-multiline
-    objects: always-multiline
-    imports: always-multiline
-    exports: always-multiline
-    functions: ignore
