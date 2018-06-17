@@ -22,7 +22,8 @@
     "build": "yarn webpack --env.production --progress",
     "webpack": "yarn clean && webpack",
     "clean": "rimraf dist",
-    "lint": "eslint --cache src"
+    "lint": "eslint --cache src",
+    "prettier": "prettier --write"
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
