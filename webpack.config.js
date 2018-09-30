@@ -4,6 +4,7 @@
  */
 
 const { resolve } = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -50,6 +51,8 @@ module.exports = env => {
       ]
     },
     plugins: [
+      new webpack.ProgressPlugin(),
+
       // Code Splitting - CSS
       // new ExtractTextPlugin(eitherDevOrProd('[name].css', '[name].[chunkhash].css')),
       new MiniCssExtractPlugin({
