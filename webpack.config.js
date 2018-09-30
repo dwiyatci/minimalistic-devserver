@@ -1,6 +1,6 @@
 /**
  * Created by glenn on 05.08.16.
- * Last updated on 17.06.18.
+ * Last updated on 30.09.18.
  */
 
 const { resolve } = require('path');
@@ -16,8 +16,8 @@ module.exports = env => {
     module: {
       rules: [
         {
-          test: /\.js$/,
-          include: [resolve(__dirname, 'src')],
+          test: /\.m?js$/,
+          exclude: /(node_modules|bower_components)/,
           use: {
             // https://webpack.js.org/loaders/babel-loader
             loader: 'babel-loader',
