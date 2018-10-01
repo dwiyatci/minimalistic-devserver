@@ -41,10 +41,6 @@ module.exports = env => {
           use: 'html-loader'
         },
         {
-          test: /\.json$/,
-          type: 'json'
-        },
-        {
           test: /\.(png|jpg|gif)$/,
           use: 'url-loader?limit=8192'
         }

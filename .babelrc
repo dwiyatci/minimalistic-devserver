@@ -9,6 +9,7 @@
           ]
         },
         "useBuiltIns": "usage",
+        "modules": false,
         "debug": false
       }
     ]
