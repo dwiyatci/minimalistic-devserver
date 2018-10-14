@@ -41,7 +41,7 @@ module.exports = env => {
           use: 'html-loader'
         },
         {
-          test: /\.(png|jpg|gif)$/,
+          test: /\.(png|jpe?g|gif)$/,
           use: 'url-loader?limit=8192'
         }
       ]
