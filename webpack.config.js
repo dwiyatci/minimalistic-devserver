@@ -67,7 +67,7 @@ module.exports = env => {
         chunks: 'all',
         name: false
       },
-      runtimeChunk: true
+      runtimeChunk: 'single'
     },
     devServer: {
       contentBase: resolve(__dirname, 'dist'),
