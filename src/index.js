@@ -7,5 +7,5 @@ import $ from 'jquery';
 import './app.css';
 
 $(() => {
-  $('#app').text(identity('Ahoj, Veronika! ;)'));
+  $('#app').text(identity('Dzień dobry, Karolina! ;)'));
 });
