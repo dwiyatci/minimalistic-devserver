@@ -1,6 +1,6 @@
 /**
  * Created by glenn on 05.08.16.
- * Last updated on 30.09.18.
+ * Last updated on 09.04.20.
  */
 
 const { resolve } = require('path');
@@ -8,11 +8,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = env => {
+module.exports = (env) => {
   const config = {
     mode: eitherDevOrProd('development', 'production'),
+    devtool: 'source-map',
     output: {
-      filename: eitherDevOrProd('[name].js', '[name].[chunkhash].js')
+      filename: eitherDevOrProd('[name].js', '[name].[contenthash].js'),
     },
     module: {
       rules: [
@@ -23,9 +24,9 @@ module.exports = env => {
             // https://webpack.js.org/loaders/babel-loader
             loader: 'babel-loader',
             options: {
-              cacheDirectory: true
-            }
-          }
+              cacheDirectory: true,
+            },
+          },
         },
         {
           test: /\.css$/,
@@ -34,17 +35,17 @@ module.exports = env => {
           //   use: 'css-loader',
           //   fallback: 'style-loader',
           // }),
-          use: [MiniCssExtractPlugin.loader, 'css-loader']
+          use: [MiniCssExtractPlugin.loader, 'css-loader'],
         },
         {
           test: /\.html$/,
-          use: 'html-loader'
+          use: 'html-loader',
         },
         {
           test: /\.(png|jpe?g|gif)$/,
-          use: 'url-loader?limit=8192'
-        }
-      ]
+          use: 'url-loader?limit=8192',
+        },
+      ],
     },
     plugins: [
       new webpack.ProgressPlugin(),
@@ -52,30 +53,30 @@ module.exports = env => {
       // Code Splitting - CSS
       // new ExtractTextPlugin(eitherDevOrProd('[name].css', '[name].[chunkhash].css')),
       new MiniCssExtractPlugin({
-        filename: eitherDevOrProd('[name].css', '[name].[chunkhash].css')
+        filename: eitherDevOrProd('[name].css', '[name].[chunkhash].css'),
       }),
 
       // Caching
       new HtmlWebpackPlugin({
         template: './src/index.ejs',
-        favicon: './src/favicon.ico'
-      })
+        favicon: './src/favicon.ico',
+      }),
     ],
     optimization: {
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
       splitChunks: {
         chunks: 'all',
-        name: false
+        name: false,
       },
-      runtimeChunk: 'single'
+      runtimeChunk: 'single',
     },
     devServer: {
       contentBase: resolve(__dirname, 'dist'),
       compress: true,
       noInfo: false,
       historyApiFallback: true,
-      https: true
-    }
+      https: true,
+    },
   };
 
   return config;

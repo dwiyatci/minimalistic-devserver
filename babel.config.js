@@ -2,7 +2,7 @@
  * Created by glenn on 07.10.19.
  */
 
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
 
   const presets = [
@@ -10,11 +10,12 @@ module.exports = function(api) {
       '@babel/preset-env',
       {
         targets: 'last 2 versions',
-        useBuiltIns: 'usage',
+        useBuiltIns: 'entry',
         corejs: 3,
-        debug: false
-      }
-    ]
+        modules: false,
+        debug: false,
+      },
+    ],
   ];
 
   const plugins = [
@@ -25,15 +26,15 @@ module.exports = function(api) {
         corejs: 3,
         helpers: true,
         regenerator: true,
-        useESModules: false
-      }
+        useESModules: true,
+      },
     ],
     '@babel/plugin-proposal-object-rest-spread',
-    'lodash'
+    'lodash',
   ];
 
   return {
     presets,
-    plugins
+    plugins,
   };
 };
