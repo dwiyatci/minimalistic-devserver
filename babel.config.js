@@ -30,7 +30,7 @@ module.exports = function (api) {
       },
     ],
     '@babel/plugin-proposal-object-rest-spread',
-    'lodash',
+    'babel-plugin-lodash',
   ];
 
   return {
