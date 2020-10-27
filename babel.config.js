@@ -2,7 +2,7 @@
  * Created by glenn on 07.10.19.
  */
 
-module.exports = function (api) {
+module.exports = (api) => {
   api.cache(true);
 
   const presets = [
