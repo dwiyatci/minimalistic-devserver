@@ -1,19 +1,20 @@
 /**
  * Created by glenn on 05.08.16.
- * Last updated on 09.04.20.
+ * Last updated on 27.10.20.
  */
 
-const { resolve } = require('path');
+const path = require('path');
 const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env) => {
   const config = {
     mode: eitherDevOrProd('development', 'production'),
-    devtool: 'source-map',
     output: {
       filename: eitherDevOrProd('[name].js', '[name].[contenthash].js'),
+      path: path.resolve(__dirname, 'dist'),
     },
     module: {
       rules: [
@@ -30,12 +31,7 @@ module.exports = (env) => {
         },
         {
           test: /\.css$/,
-          // use: ['style-loader', 'css-loader'],
-          // use: ExtractTextPlugin.extract({
-          //   use: 'css-loader',
-          //   fallback: 'style-loader',
-          // }),
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          use: [eitherDevOrProd('style-loader', MiniCssExtractPlugin.loader), 'css-loader'],
         },
         {
           test: /\.html$/,
@@ -50,38 +46,55 @@ module.exports = (env) => {
     plugins: [
       new webpack.ProgressPlugin(),
 
-      // Code Splitting - CSS
-      // new ExtractTextPlugin(eitherDevOrProd('[name].css', '[name].[chunkhash].css')),
-      new MiniCssExtractPlugin({
-        filename: eitherDevOrProd('[name].css', '[name].[chunkhash].css'),
-      }),
+      // https://webpack.js.org/plugins/mini-css-extract-plugin/#common-use-case
+      ...eitherDevOrProd([], [new MiniCssExtractPlugin({ filename: '[name].[chunkhash].css' })]),
 
-      // Caching
+      // Output Management
+      // https://webpack.js.org/guides/output-management/#setting-up-htmlwebpackplugin
+      // https://webpack.js.org/guides/output-management/#cleaning-up-the-dist-folder
+      // Development
+      // https://webpack.js.org/guides/development/#using-watch-mode
+      new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
       new HtmlWebpackPlugin({
         template: './src/index.ejs',
         favicon: './src/favicon.ico',
       }),
     ],
     optimization: {
-      // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
-      splitChunks: {
-        chunks: 'all',
-        name: false,
-      },
+      // Caching
+      // https://webpack.js.org/guides/caching/#extracting-boilerplate
       runtimeChunk: 'single',
     },
     devServer: {
-      contentBase: resolve(__dirname, 'dist'),
+      contentBase: path.resolve(__dirname, 'dist'),
       compress: true,
       noInfo: false,
       historyApiFallback: true,
       https: true,
+      hot: true,
+      publicPath: '/',
+    },
+    // Persistent Caching
+    // https://webpack.js.org/blog/2020-10-10-webpack-5-release/#persistent-caching
+    cache: {
+      // 1. Set cache type to filesystem
+      type: 'filesystem',
+
+      buildDependencies: {
+        // 2. Add your config as buildDependency to get cache invalidation on config change
+        config: [__filename],
+
+        // 3. If you have other things the build depends on you can add them here
+        // Note that webpack, loaders and all modules referenced from your config are automatically added
+      },
     },
   };
 
   return config;
 
+  // Production
+  // https://webpack.js.org/guides/production/#specify-the-mode
   function eitherDevOrProd(devStuff, prodStuff) {
-    return env && env.production ? prodStuff : devStuff;
+    return !(env && env.production) ? devStuff : prodStuff;
   }
 };

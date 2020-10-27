@@ -1,7 +1,7 @@
 # minimalist-devserver
 
-A minimalist development server running on https://localhost:8080, powered by
-`webpack-dev-server` 4.X.
+A minimalist development server running on https://localhost:8080/, powered by
+`webpack` 5.X.
 
 ### Why?
 
