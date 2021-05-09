@@ -28,7 +28,7 @@
   "dependencies": {
     "@babel/runtime-corejs3": "7.12.5",
     "jquery": "3.5.1",
-    "lodash": "4.17.20"
+    "lodash": "4.17.21"
   },
   "devDependencies": {
     "@babel/core": "7.12.9",
