@@ -73,6 +73,7 @@ module.exports = (env) => {
       https: true,
       hot: true,
       publicPath: '/',
+      host: '0.0.0.0',
     },
     // Persistent Caching
     // https://webpack.js.org/blog/2020-10-10-webpack-5-release/#persistent-caching

@@ -1,5 +1,6 @@
 /**
  * Created by glenn on 07.10.19.
+ * Last updated on 11.08.21.
  */
 
 module.exports = (api) => {
@@ -11,9 +12,15 @@ module.exports = (api) => {
       {
         targets: 'last 2 versions',
         useBuiltIns: 'entry',
-        corejs: 3,
+        /**
+         * "Warning! Recommended to specify used minor core-js version, like corejs: '3.16', instead
+         * of corejs: 3, since with corejs: 3 will not be injected modules which were added in minor
+         * core-js releases."
+         * @see https://github.com/zloirock/core-js#babelpreset-env
+         */
+        corejs: { version: 3.16, proposals: true },
         modules: false,
-        debug: false,
+        debug: true,
       },
     ],
   ];
@@ -23,10 +30,14 @@ module.exports = (api) => {
       '@babel/plugin-transform-runtime',
       {
         absoluteRuntime: false,
-        corejs: 3,
+        /**
+         * "Warning! If you use @babel/preset-env and @babel/runtime together, use corejs option
+         * only in one place since it's duplicate functionality and will cause conflicts."
+         * @see https://github.com/zloirock/core-js#babelruntime
+         */
+        // corejs: { version: 3.16, proposals: true },
         helpers: true,
         regenerator: true,
-        useESModules: true,
       },
     ],
     '@babel/plugin-proposal-object-rest-spread',
