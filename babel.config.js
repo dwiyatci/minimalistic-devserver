@@ -18,7 +18,7 @@ module.exports = (api) => {
          * core-js releases."
          * @see https://github.com/zloirock/core-js#babelpreset-env
          */
-        corejs: { version: 3.16, proposals: true },
+        corejs: { version: '3.16', proposals: true },
         modules: false,
         debug: false,
       },
