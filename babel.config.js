@@ -20,7 +20,7 @@ module.exports = (api) => {
          */
         corejs: { version: 3.16, proposals: true },
         modules: false,
-        debug: true,
+        debug: false,
       },
     ],
   ];
@@ -33,9 +33,12 @@ module.exports = (api) => {
         /**
          * "Warning! If you use @babel/preset-env and @babel/runtime together, use corejs option
          * only in one place since it's duplicate functionality and will cause conflicts."
+         * Hence, the dependency used to provide the necessary runtime helpers adapted
+         * (@babel/runtime instead of @babel/runtime-corejs2 or @babel/runtime-corejs3)
          * @see https://github.com/zloirock/core-js#babelruntime
+         * @see https://babeljs.io/docs/en/babel-plugin-transform-runtime/#corejs
          */
-        // corejs: { version: 3.16, proposals: true },
+        // corejs: { version: 3, proposals: true },
         helpers: true,
         regenerator: true,
       },
